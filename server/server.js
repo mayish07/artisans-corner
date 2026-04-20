@@ -27,38 +27,22 @@ const paymentRoutes = require('./routes/payment');
 const { globalErrorHandler } = require('./middleware/errorHandler');
 
 const app = express();
-const server = http.createServer(app);
 
-// Socket.io setup for real-time notifications
-const io = new Server(server, {
-  cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-});
+let server;
+let io;
 
-// Make io accessible to routes
-app.set('io', io);
-
-// Socket.io connection handling
-io.on('connection', (socket) => {
-  console.log('Client connected:', socket.id);
-
-  socket.on('join-user-room', (userId) => {
-    socket.join(`user-${userId}`);
-    console.log(`User ${userId} joined their room`);
+// Socket.io - only in non-serverless mode
+if (process.env.VERCEL === undefined) {
+  server = http.createServer(app);
+  io = new Server(server, {
+    cors: {
+      origin: process.env.CLIENT_URL || 'http://localhost:5173',
+      methods: ['GET', 'POST'],
+      credentials: true
+    }
   });
-
-  socket.on('join-vendor-room', (vendorId) => {
-    socket.join(`vendor-${vendorId}`);
-    console.log(`Vendor ${vendorId} joined their room`);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
-  });
-});
+  app.set('io', io);
+}
 
 // Trust proxy (for rate limiting behind reverse proxy)
 app.set('trust proxy', 1);
@@ -131,13 +115,13 @@ app.use(globalErrorHandler);
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
   console.error('Unhandled Rejection:', err);
-  server.close(() => process.exit(1));
+  if (server) server.close(() => process.exit(1));
 });
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
-  server.close(() => process.exit(1));
+  if (server) server.close(() => process.exit(1));
 });
 
 const PORT = process.env.PORT || 5000;
@@ -152,4 +136,4 @@ if (process.env.VERCEL === undefined) {
   console.log(`Server running in serverless mode`);
 }
 
-module.exports = { app, server, io };
+module.exports = app;
