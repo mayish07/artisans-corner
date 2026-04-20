@@ -81,8 +81,12 @@ app.use('/api/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB (skip if no URI in serverless)
+if (process.env.MONGODB_URI) {
+  connectDB().catch(err => console.log('MongoDB connection skipped:', err.message));
+} else {
+  console.log('MONGODB_URI not set - running without database');
+}
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -138,9 +142,14 @@ process.on('uncaughtException', (err) => {
 
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// Vercel serverless doesn't need listen
+if (process.env.VERCEL === undefined) {
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
+} else {
+  console.log(`Server running in serverless mode`);
+}
 
 module.exports = { app, server, io };
