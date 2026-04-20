@@ -99,8 +99,18 @@ app.use('/api/webhook', webhookRoutes);
 app.use('/api/payment', paymentRoutes);
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Artisan\'s Corner API is running' });
+app.get('/api/health', async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    const dbState = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+    res.json({ 
+      status: 'OK', 
+      message: 'Artisan\'s Corner API is running',
+      database: dbState
+    });
+  } catch (error) {
+    res.json({ status: 'OK', message: 'Artisan\'s Corner API is running' });
+  }
 });
 
 // 404 handler
