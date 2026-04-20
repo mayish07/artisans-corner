@@ -1,102 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-background: #FFFBF5;
+  --color-surface: #FFFFFF;
+  --color-text: #1C1917;
+  --color-text-muted: #57534E;
+  --color-border: #E7E5E4;
+  --color-primary: #D97706;
+  --color-primary-dark: #B45309;
+}
+
+.dark {
+  --color-background: #1C1917;
+  --color-surface: #292524;
+  --color-text: #FAFAF9;
+  --color-text-muted: #A8A29E;
+  --color-border: #44403C;
+}
+
 @layer base {
-  html {
-    scroll-behavior: smooth;
+  body {
+    @apply bg-background text-stone-900 font-sans antialiased;
   }
   
-  body {
-    @apply font-sans antialiased;
-    @apply bg-background text-gray-900;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+  .dark body {
+    @apply bg-stone-900 text-stone-100;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors font-medium;
+    @apply px-4 py-2 bg-amber-500 text-white rounded-button hover:bg-amber-600 transition-colors font-medium;
   }
   
   .btn-secondary {
-    @apply border border-amber-600 text-amber-600 px-4 py-2 rounded-lg hover:bg-amber-50 transition-colors font-medium;
-  }
-
-  .btn-danger {
-    @apply bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium;
+    @apply px-4 py-2 border border-amber-500 text-amber-600 rounded-button hover:bg-amber-50 transition-colors font-medium;
   }
   
-  .btn-ghost {
-    @apply text-stone-600 px-4 py-2 rounded-lg hover:bg-stone-100 transition-colors font-medium;
+  .btn-danger {
+    @apply px-4 py-2 bg-red-600 text-white rounded-button hover:bg-red-700 transition-colors font-medium;
   }
   
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all;
+    @apply w-full px-4 py-3 rounded-button border border-stone-300 dark:border-stone-600 dark:bg-stone-800 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 dark:focus:ring-amber-800 outline-none transition;
   }
   
   .card {
-    @apply bg-white rounded-xl shadow-sm p-6;
-  }
-
-  .shadow-card {
-    @apply shadow-sm;
-  }
-
-  .shadow-card-hover {
-    @apply hover:shadow-md;
-  }
-
-  .shadow-modal {
-    @apply shadow-2xl;
+    @apply bg-white dark:bg-stone-800 rounded-product shadow-card;
   }
 }
 
-@layer utilities {
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .text-balance {
-    text-wrap: balance;
-  }
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-@keyframes slide-in {
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
   from {
-    transform: translateX(100%);
     opacity: 0;
+    transform: translateY(10px);
   }
   to {
-    transform: translateX(0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.animate-slide-in {
-  animation: slide-in 0.3s ease-out;
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-* {
-  -webkit-tap-highlight-color: transparent;
+::-webkit-scrollbar-track {
+  @apply bg-stone-100;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px white inset;
-  -webkit-text-fill-color: #1C1917;
+::-webkit-scrollbar-thumb {
+  @apply bg-stone-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-stone-400;
+}
+
+/* Product Image Hover Zoom */
+.product-image-container {
+  overflow: hidden;
+}
+
+.product-image-container img {
+  @apply transition-transform duration-500;
+}
+
+.product-image-container:hover img {
+  @apply scale-110;
 }
