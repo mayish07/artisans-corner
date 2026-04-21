@@ -65,6 +65,10 @@ app.use('/api/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Serve static frontend in serverless mode
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
 // Connect to MongoDB (skip if no URI in serverless)
 if (process.env.MONGODB_URI) {
   connectDB().catch(err => console.log('MongoDB connection skipped:', err.message));
@@ -99,6 +103,11 @@ app.get('/api/health', async (req, res) => {
   } catch (error) {
     res.json({ status: 'OK', message: 'Artisan\'s Corner API is running' });
   }
+});
+
+// SPA fallback - serve index.html for all non-API routes
+app.get(/^(?!\/api\/).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 // 404 handler
