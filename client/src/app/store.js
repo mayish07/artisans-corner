@@ -29,6 +29,7 @@ const persistedReducer = persistReducer(persistConfig, (state, action) => {
     cart: cartReducer,
     products: productReducer,
     orders: orderReducer,
+    ui: uiReducer,
   };
   
   if (action.type.startsWith('auth/')) {

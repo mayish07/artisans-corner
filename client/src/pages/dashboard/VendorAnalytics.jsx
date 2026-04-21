@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Bar, Line, Pie } from 'react-chartjs-2';
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { DollarSign, ShoppingCart, Package, TrendingUp, Calendar } from 'lucide-react';
 import api from '../../services/api';
 
