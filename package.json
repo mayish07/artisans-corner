@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "cd server && node server.js",
-    "install:all": "yarn && cd client && yarn && cd ../server && yarn"
+    "install:all": "yarn && cd client && yarn && cd ../server && yarn",
+    "build:client": "cd client && npm run build"
   },
   "dependencies": {
     "mongodb": "^7.1.1"
