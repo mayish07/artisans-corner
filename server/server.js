@@ -67,7 +67,12 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Serve static frontend in serverless mode
 const path = require('path');
-app.use(express.static(path.join(__dirname, '../client/dist')));
+const resolvePath = (...segments) => {
+  const base = process.env.VERCEL ? process.cwd() : __dirname;
+  return path.join(base, ...segments);
+};
+const distPath = resolvePath('client', 'dist');
+app.use(express.static(distPath));
 
 // Connect to MongoDB (skip if no URI in serverless)
 if (process.env.MONGODB_URI) {
@@ -107,7 +112,7 @@ app.get('/api/health', async (req, res) => {
 
 // SPA fallback - serve index.html for all non-API routes
 app.get(/^(?!\/api\/).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 // 404 handler
