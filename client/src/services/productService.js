@@ -22,6 +22,11 @@ export const productService = {
     return response.data;
   },
 
+  getStores: async () => {
+    const response = await api.get('/stores');
+    return response.data;
+  },
+
   searchProducts: async (query) => {
     const response = await api.get('/products', { params: { search: query } });
     return response.data;

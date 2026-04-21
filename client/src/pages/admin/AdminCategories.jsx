@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Folder, Search, Plus, Edit, Trash2, Image, X } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { api } from '../services/api';
+import api from '../../services/api';
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState([]);

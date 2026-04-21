@@ -3,7 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search as SearchIcon, Filter, X } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import { getProducts } from '../services/productService';
+import productService from '../services/productService';
 
 export default function SearchPage() {
   const [searchParams] = useSearchParams();
@@ -21,7 +21,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     setLoading(true);
-    getProducts({ 
+    productService.getProducts({ 
       search: query, 
       ...filters,
       sort,

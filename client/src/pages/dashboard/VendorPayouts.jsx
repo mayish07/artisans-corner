@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { DollarSign, Clock, CheckCircle, AlertCircle, Download, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { api } from '../services/api';
+import api from '../../services/api';
 
 export default function VendorPayoutsPage() {
   const [payouts, setPayouts] = useState([]);

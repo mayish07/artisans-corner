@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, Send, User, Search, Clock, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { api } from '../services/api';
+import api from '../../services/api';
 
 export default function VendorMessagesPage() {
   const [threads, setThreads] = useState([]);

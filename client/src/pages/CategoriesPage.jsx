@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, ArrowRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import { getProducts } from '../services/productService';
+import productService from '../services/productService';
 
 const categories = [
   { id: 'jewelry', name: 'Jewelry & Watches', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400', count: 156 },
@@ -25,7 +25,7 @@ export default function CategoriesPage() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    getProducts({ category: featuredCategory.id, limit: 4 }).then(setProducts).catch(console.error);
+    productService.getProducts({ category: featuredCategory.id, limit: 4 }).then(setProducts).catch(console.error);
   }, [featuredCategory]);
 
   return (

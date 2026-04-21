@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, Star, MapPin, Package } from 'lucide-react';
-import { getStores } from '../services/productService';
+import productService from '../services/productService';
 
 export default function StoresPage() {
   const [stores, setStores] = useState([]);
@@ -10,7 +10,7 @@ export default function StoresPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getStores()
+    productService.getStores()
       .then(setStores)
       .catch(console.error)
       .finally(() => setLoading(false));

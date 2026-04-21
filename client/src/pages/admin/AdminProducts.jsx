@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Package, Search, Star, Eye, Edit, Trash2, ToggleLeft, ToggleRight, Sparkles } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
-import { api } from '../services/api';
+import api from '../../services/api';
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);

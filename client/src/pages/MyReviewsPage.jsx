@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, ThumbsUp, MessageSquare, Image as ImageIcon } from 'lucide-react';
-import { api } from '../services/api';
+import api from '../services/api';
 
 export default function MyReviewsPage() {
   const [reviews, setReviews] = useState([]);

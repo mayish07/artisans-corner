@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Twitter } from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -15,9 +15,8 @@ export default function Footer() {
               Discover unique handmade treasures from talented artisans around the world.
             </p>
             <div className="flex gap-3 mt-4">
-              <a href="#" className="p-2 hover:text-amber-500"><Instagram className="w-5 h-5" /></a>
-              <a href="#" className="p-2 hover:text-amber-500"><Facebook className="w-5 h-5" /></a>
-              <a href="#" className="p-2 hover:text-amber-500"><Twitter className="w-5 h-5" /></a>
+              <a href="mailto:support@artisanscorner.com" className="p-2 hover:text-amber-500"><Mail className="w-5 h-5" /></a>
+              <a href="tel:+1234567890" className="p-2 hover:text-amber-500"><Phone className="w-5 h-5" /></a>
             </div>
           </div>
 

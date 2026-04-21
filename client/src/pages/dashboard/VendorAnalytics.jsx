@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'chart.js';
+import { Bar, Line, Pie } from 'react-chartjs-2';
 import { DollarSign, ShoppingCart, Package, TrendingUp, Calendar } from 'lucide-react';
-import { api } from '../services/api';
+import api from '../../services/api';
 
 const COLORS = ['#F59E0B', '#10B981', '#3B82F6', '#EF4444'];
 

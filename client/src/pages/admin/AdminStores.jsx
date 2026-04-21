@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Store, Search, CheckCircle, XCircle, Ban, Eye, Package, Star } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
-import { api } from '../services/api';
+import api from '../../services/api';
 
 export default function AdminStoresPage() {
   const [stores, setStores] = useState([]);

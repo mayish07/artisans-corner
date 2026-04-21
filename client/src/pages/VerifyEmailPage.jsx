@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, CheckCircle, XCircle, Loader } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { api } from '../services/api';
+import api from '../services/api';
 
 export default function VerifyEmailPage() {
   const { token } = useParams();

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Bell, Check, CheckCheck, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { api } from '../services/api';
+import api from '../services/api';
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);

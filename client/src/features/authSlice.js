@@ -142,8 +142,8 @@ const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
-        state.user = action.payload.data.user;
-        state.accessToken = action.payload.data.accessToken;
+        state.user = action.payload.user;
+        state.accessToken = action.payload.accessToken;
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
@@ -156,8 +156,8 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
-        state.user = action.payload.data.user;
-        state.accessToken = action.payload.data.accessToken;
+        state.user = action.payload.user;
+        state.accessToken = action.payload.accessToken;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -168,8 +168,10 @@ const authSlice = createSlice({
       })
       .addCase(getMe.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.data.user;
-        localStorage.setItem('user', JSON.stringify(action.payload.data.user));
+        state.user = action.payload;
+        if (action.payload) {
+          localStorage.setItem('user', JSON.stringify(action.payload));
+        }
       })
       .addCase(getMe.rejected, (state) => {
         state.isLoading = false;
@@ -180,10 +182,10 @@ const authSlice = createSlice({
         localStorage.removeItem('user');
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
-        state.user = action.payload.data.user;
+        state.user = action.payload;
       })
       .addCase(becomeSeller.fulfilled, (state, action) => {
-        state.user = action.payload.data.user;
+        state.user = action.payload;
       })
       .addCase(refreshToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.accessToken;

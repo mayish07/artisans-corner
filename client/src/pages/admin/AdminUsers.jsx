@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users, Store, Package, DollarSign, Shield, Search, MoreVertical, UserPlus, Ban, CheckCircle, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { api } from '../services/api';
+import api from '../../services/api';
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
