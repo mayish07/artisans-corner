@@ -4,6 +4,14 @@
     {
       "src": "server/server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "client/dist/index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "client/dist/assets/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -12,12 +20,12 @@
       "dest": "server/server.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "server/server.js"
+      "src": "/assets/(.*)",
+      "dest": "client/dist/assets/$1"
     },
     {
-      "src": "/",
-      "dest": "server/server.js"
+      "src": "/(.*)",
+      "dest": "client/dist/index.html"
     }
   ]
 }
