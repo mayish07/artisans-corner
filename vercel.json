@@ -4,14 +4,6 @@
     {
       "src": "server/server.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "client/dist/index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "client/dist/assets/**",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -20,12 +12,20 @@
       "dest": "server/server.js"
     },
     {
+      "src": "/favicon.ico",
+      "dest": "client/dist/favicon.ico"
+    },
+    {
+      "src": "/favicon.png",
+      "dest": "client/dist/favicon.png"
+    },
+    {
       "src": "/assets/(.*)",
       "dest": "client/dist/assets/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "client/dist/index.html"
+      "dest": "server/server.js"
     }
   ]
 }
