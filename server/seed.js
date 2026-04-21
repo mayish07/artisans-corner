@@ -56,43 +56,24 @@ async function seed() {
     await Store.deleteMany({});
     await Order.deleteMany({});
 
-    console.log('Creating demo users...');
+    console.log('Creating demo user...');
     
-    const buyer = new User({
-      name: 'Sarah Johnson',
-      email: 'buyer@artisanscorner.com',
-      password: 'Buyer@123',
+    const demoUser = new User({
+      name: 'Demo User',
+      email: 'demo@demo.com',
+      password: 'demo123',
       role: 'buyer',
       isActive: true,
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
     });
-    await buyer.save();
-
-    const vendor = new User({
-      name: 'Michael Chen',
-      email: 'vendor@artisanscorner.com',
-      password: 'Vendor@123',
-      role: 'vendor',
-      isActive: true,
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
-    });
-    await vendor.save();
-
-    const admin = new User({
-      name: 'Admin User',
-      email: 'admin@artisanscorner.com',
-      password: 'Admin@123',
-      role: 'admin',
-      isActive: true,
-    });
-    await admin.save();
+    await demoUser.save();
 
     console.log('Creating stores...');
     const stores = [];
     for (let i = 0; i < storeNames.length; i++) {
       const storeName = storeNames[i];
       const store = new Store({
-        owner: i === 0 ? vendor._id : new mongoose.Types.ObjectId(),
+        owner: demoUser._id,
         name: storeName.name,
         description: storeName.description,
         category: storeName.category,
@@ -143,7 +124,7 @@ async function seed() {
     const orderSubtotal = products.slice(0, 3).reduce((sum, p) => sum + p.price, 0);
     const order = new Order({
       orderNumber: 'ART-' + Date.now().toString().slice(-10) + '-DEMO',
-      buyerId: buyer._id,
+      buyerId: demoUser._id,
       items: products.slice(0, 3).map((p) => ({
         productId: p._id,
         vendorId: p.vendorId,
@@ -176,13 +157,11 @@ async function seed() {
     await order.save();
 
     console.log('\n=== Seed Complete! ===\n');
-    console.log('Demo Accounts:');
-    console.log('----------------');
-    console.log('Buyer:  buyer@artisanscorner.com  /  Buyer@123');
-    console.log('Vendor: vendor@artisanscorner.com /  Vendor@123');
-    console.log('Admin:  admin@artisanscorner.com  /  Admin@123');
+    console.log('Demo Login:');
+    console.log('Email: demo@demo.com');
+    console.log('Password: demo123');
     console.log('\nCreated:');
-    console.log('- 3 users');
+    console.log('- 1 demo user');
     console.log(`- ${stores.length} stores`);
     console.log(`- ${products.length} products`);
     console.log('- 1 sample order');
