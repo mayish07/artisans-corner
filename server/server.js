@@ -85,9 +85,58 @@ const distPath = process.env.VERCEL
   : path.join(__dirname, '../client/dist');
 app.use(express.static(distPath));
 
-// Connect to MongoDB (skip if no URI in serverless)
+// Auto-seed demo data on first run
+const autoSeed = async () => {
+  try {
+    const mongoose = require('mongoose');
+    if (mongoose.connection.readyState !== 1) return;
+    
+    const User = require('./models/User');
+    const Product = require('./models/Product');
+    const Store = require('./models/Store');
+    
+    const demoUser = await User.findOne({ email: 'demo@demo.com' });
+    if (!demoUser) {
+      console.log('Creating demo user...');
+      const bcrypt = require('bcryptjs');
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash('demo123', salt);
+      
+      await User.create({
+        name: 'Demo User',
+        email: 'demo@demo.com',
+        password: hashedPassword,
+        role: 'buyer',
+        isActive: true,
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150'
+      });
+      
+      const user = await User.findOne({ email: 'demo@demo.com' });
+      
+      // Create demo stores
+      const stores = await Store.insertMany([
+        { owner: user._id, name: 'Luna Clay Studio', description: 'Handcrafted pottery inspired by nature', category: 'Pottery', logo: 'https://ui-avatars.com/api/?name=Luna+Clay&background=amber&color=fff', isVerified: true, rating: 4.8, totalOrders: 45 },
+        { owner: user._id, name: 'Silver Moon Designs', description: 'Modern jewelry with artisan soul', category: 'Jewelry', logo: 'https://ui-avatars.com/api/?name=Silver+Moon&background=teal&color=fff', isVerified: true, rating: 4.9, totalOrders: 89 }
+      ]);
+      
+      // Create demo products
+      await Product.insertMany([
+        { vendorId: user._id, storeId: stores[0]._id, title: 'Handcrafted Ceramic Vase', description: 'Beautiful hand-thrown ceramic vase', price: 89.99, category: 'Pottery', images: ['https://images.unsplash.com/photo-1578749556568-bc2c40e2b479?w=600'], stock: 15, isActive: true, isFeatured: true },
+        { vendorId: user._id, storeId: stores[0]._id, title: 'Artisan Coffee Mug', description: 'Perfect for your morning coffee', price: 34.99, category: 'Pottery', images: ['https://images.unsplash.com/photo-1514228742587-6b1558fcca6d?w=600'], stock: 25, isActive: true },
+        { vendorId: user._id, storeId: stores[1]._id, title: 'Silver Moon Ring', description: 'Elegant sterling silver ring', price: 125.00, category: 'Jewelry', images: ['https://images.unsplash.com/photo-1605100809563-1628d549d7fc?w=600'], stock: 8, isActive: true, isFeatured: true },
+        { vendorId: user._id, storeId: stores[1]._id, title: 'Gold Hoop Earrings', description: 'Classic gold-plated hoops', price: 45.99, category: 'Jewelry', images: ['https://images.unsplash.com/photo-1630019852942-f89202989a59?w=600'], stock: 20, isActive: true }
+      ]);
+      
+      console.log('✓ Demo data created: demo@demo.com / demo123');
+    }
+  } catch (err) {
+    console.log('Auto-seed skipped:', err.message);
+  }
+};
+
+// Connect to MongoDB
 if (process.env.MONGODB_URI) {
-  connectDB().catch(err => console.log('MongoDB connection skipped:', err.message));
+  connectDB().then(() => autoSeed()).catch(err => console.log('MongoDB connection skipped:', err.message));
 } else {
   console.log('MONGODB_URI not set - running without database');
 }
