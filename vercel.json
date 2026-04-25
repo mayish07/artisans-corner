@@ -20,6 +20,6 @@
       "dest": "server/server.js"
     }
   ],
-  "buildCommand": "cd client && npm run build",
+  "buildCommand": "cd client && npm run build && echo done",
   "installCommand": "npm install && cd client && npm install && cd ../server && npm install"
 }
