@@ -170,9 +170,15 @@ const autoSeed = async () => {
 
 // Connect to MongoDB
 if (process.env.MONGODB_URI) {
-  connectDB().then(() => autoSeed()).catch(err => console.log('DB:', err.message));
+  console.log('Connecting to MongoDB...');
+  connectDB()
+    .then(() => {
+      console.log('MongoDB connected!');
+      autoSeed();
+    })
+    .catch(err => console.log('DB connection error:', err.message));
 } else {
-  console.log('MONGODB_URI not set');
+  console.log('MONGODB_URI not set - running in demo mode');
 }
 
 const PORT = process.env.PORT || 5000;
