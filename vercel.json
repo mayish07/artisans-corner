@@ -8,15 +8,15 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "VERCEL": "1"
+    "VERCEL": "1",
+    "MONGODB_URI": "mongodb+srv://mohammadmayish_db_user:80WEDNfp5YBFEU13@artisanscorner.pq1hxna.mongodb.net/?appName=ArtisansCorner",
+    "JWT_ACCESS_SECRET": "your-super-secret-access-key-min-32",
+    "JWT_REFRESH_SECRET": "your-super-secret-refresh-key-min-32",
+    "CLIENT_URL": "https://artisans-corner-nine.vercel.app"
   },
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/server.js"
-    },
-    {
-      "src": "/assets/(.*)",
       "dest": "server/server.js"
     },
     {
