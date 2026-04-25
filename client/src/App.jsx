@@ -8,6 +8,8 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import Toast from './components/Toast';
+import BackToTop from './components/BackToTop';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
@@ -36,6 +38,7 @@ import ContactPage from './pages/ContactPage';
 import AddressesPage from './pages/AddressesPage';
 import MyReviewsPage from './pages/MyReviewsPage';
 import NotificationsPage from './pages/NotificationsPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 import ManageProducts from './pages/dashboard/ManageProducts';
 import AddEditProduct from './pages/dashboard/AddEditProduct';
@@ -174,10 +177,12 @@ function App() {
             <Route path="/dashboard/admin/categories" element={
               <ProtectedRoute requiredRole="admin"><AdminCategories /></ProtectedRoute>
             } />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
         <Footer />
         <Toast />
+        <BackToTop />
       </div>
     </BrowserRouter>
   );
