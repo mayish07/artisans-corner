@@ -6,6 +6,10 @@
       "use": "@vercel/node"
     }
   ],
+  "env": {
+    "NODE_ENV": "production",
+    "VERCEL": "1"
+  },
   "routes": [
     {
       "src": "/api/(.*)",
@@ -20,6 +24,6 @@
       "dest": "server/server.js"
     }
   ],
-  "buildCommand": "cd client && npm run build && echo done",
+  "buildCommand": "cd client && npm run build",
   "installCommand": "npm install && cd client && npm install && cd ../server && npm install"
 }
