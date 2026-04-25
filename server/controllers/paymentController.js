@@ -7,6 +7,9 @@ const Cart = require('../models/Cart');
 const { ApiError } = require('../middleware/errorHandler');
 const { asyncHandler } = require('../middleware/errorHandler');
 
+// Stripe at module level (singleton)
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 /**
  * @desc    Create Stripe payment intent
  * @route   POST /api/payment/create-intent
@@ -58,8 +61,6 @@ const createPaymentIntent = asyncHandler(async (req, res) => {
   const totalAmount = subtotal - discount;
   const amountInCents = Math.round(totalAmount * 100);
 
-  const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amountInCents,
     currency: 'usd',
@@ -96,7 +97,6 @@ const createPaymentIntent = asyncHandler(async (req, res) => {
 const confirmPayment = asyncHandler(async (req, res) => {
   const { paymentIntentId, shippingAddress, couponCode } = req.body;
 
-  const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
   const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
   if (paymentIntent.status !== 'succeeded') {

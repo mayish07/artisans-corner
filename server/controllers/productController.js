@@ -30,8 +30,16 @@ const getProducts = asyncHandler(async (req, res) => {
     isFlagged: false
   };
 
-  if (search) {
-    query.$text = { $search: search };
+  // MAX 200 CHARS SEARCH VALIDATION
+  if (search && typeof search === 'string') {
+    if (search.length > 200) {
+      throw ApiError.badRequest('Search query is too long. Maximum 200 characters allowed.');
+    }
+    req.query.search = search.trim().substring(0, 200);
+  }
+
+  if (req.query.search) {
+    query.$text = { $search: req.query.search };
   }
   if (category) query.category = category;
   if (subcategory) query.subcategory = subcategory;
@@ -103,7 +111,11 @@ const getProduct = asyncHandler(async (req, res) => {
     throw ApiError.notFound('Product not available');
   }
 
-  await product.incrementViews();
+  try {
+    await product.incrementViews();
+  } catch (error) {
+    console.error('Failed to increment views:', error);
+  }
 
   const relatedProducts = await Product.find({
     _id: { $ne: product._id },

@@ -36,7 +36,7 @@ const protect = async (req, res, next) => {
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_ACCESS_SECRET || 'access-secret-key'
+      process.env.JWT_ACCESS_SECRET
     );
 
     const user = await User.findById(decoded.id).select('-password');
@@ -98,7 +98,7 @@ const optionalAuth = async (req, res, next) => {
     if (token) {
       const decoded = jwt.verify(
         token,
-        process.env.JWT_ACCESS_SECRET || 'access-secret-key'
+        process.env.JWT_ACCESS_SECRET
       );
       const user = await User.findById(decoded.id).select('-password');
       if (user && user.isActive) {
@@ -170,7 +170,7 @@ const refreshAccessToken = async (req, res) => {
 
     const decoded = jwt.verify(
       refreshToken,
-      process.env.JWT_REFRESH_SECRET || 'refresh-secret-key'
+      process.env.JWT_REFRESH_SECRET
     );
 
     const user = await User.findById(decoded.id);

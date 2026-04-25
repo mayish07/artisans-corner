@@ -16,29 +16,6 @@ import productReducer from '../features/productSlice';
 import orderReducer from '../features/orderSlice';
 import uiReducer from '../features/uiSlice';
 
-const persistConfig = {
-  key: 'root',
-  version: 1,
-  storage,
-  whitelist: ['cart'],
-};
-
-const persistedReducer = persistReducer(persistConfig, (state, action) => {
-  const combinedReducer = {
-    auth: authReducer,
-    cart: cartReducer,
-    products: productReducer,
-    orders: orderReducer,
-    ui: uiReducer,
-  };
-  
-  if (action.type.startsWith('auth/')) {
-    return { ...state, auth: authReducer(state.auth, action) };
-  }
-  
-  return combinedReducer;
-});
-
 export const store = configureStore({
   reducer: {
     auth: authReducer,

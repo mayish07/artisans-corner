@@ -248,9 +248,14 @@ productSchema.statics.searchProducts = function(query, options = {}) {
     .limit(limit);
 };
 
-productSchema.methods.incrementViews = function() {
-  this.views += 1;
-  return this.save();
+productSchema.methods.incrementViews = async function() {
+  try {
+    this.views += 1;
+    return await this.save();
+  } catch (error) {
+    console.error('Error incrementing views:', error);
+    return null;
+  }
 };
 
 productSchema.methods.updateRating = async function() {

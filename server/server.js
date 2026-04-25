@@ -106,14 +106,17 @@ app.use('/api/payment', paymentRoutes);
 app.get('/api/health', async (req, res) => {
   try {
     const mongoose = require('mongoose');
-    const dbState = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
-    res.json({ 
-      status: 'OK', 
+    const states = ['disconnected', 'connected', 'connecting', 'disconnecting'];
+    const dbState = states[mongoose.connection.readyState] || 'unknown';
+    const isConnected = mongoose.connection.readyState === 1;
+    
+    res.status(isConnected ? 200 : 503).json({ 
+      status: isConnected ? 'OK' : 'ERROR', 
       message: 'Artisan\'s Corner API is running',
       database: dbState
     });
   } catch (error) {
-    res.json({ status: 'OK', message: 'Artisan\'s Corner API is running' });
+    res.status(200).json({ status: 'OK', message: 'Artisan\'s Corner API is running' });
   }
 });
 
