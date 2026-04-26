@@ -1,7 +1,6 @@
 // server/server.js
-// Artisan's Corner - Production Server with Demo Data
+// Artisan's Corner - Server for Vercel
 
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -36,72 +35,19 @@ const demoStores = [
   { _id: 's3', name: 'Weave & Wood', description: 'Textiles and woodwork', category: 'Textiles', logo: 'https://ui-avatars.com/api/?name=Weave+Wood&background=green&color=fff', isVerified: false, rating: 4.5, totalProducts: 10 }
 ];
 
-app.get('/api/health', (req, res) => {
-  res.json({ success: true, status: 'OK', timestamp: new Date() });
-});
+app.get('/api/health', (req, res) => res.json({ success: true, status: 'OK' }));
+app.get('/api/auth/login', (req, res) => res.json({ success: true, data: { user: { id: 'demo', name: 'Demo', email: 'demo@test.com', role: 'buyer' }, accessToken: 'token' } }));
+app.post('/api/auth/login', (req, res) => res.json({ success: true, data: { user: { id: 'demo', name: 'Demo', email: req.body.email, role: 'buyer' }, accessToken: 'token' } }));
+app.post('/api/auth/register', (req, res) => res.json({ success: true, data: { user: { id: 'new', name: req.body.name, email: req.body.email, role: 'buyer' }, accessToken: 'token' } }));
+app.get('/api/products', (req, res) => res.json({ success: true, data: demoProducts }));
+app.get('/api/products/featured', (req, res) => res.json({ success: true, data: demoProducts.slice(0, 4) }));
+app.get('/api/products/categories', (req, res) => res.json({ success: true, data: demoCategories }));
+app.get('/api/stores', (req, res) => res.json({ success: true, data: demoStores }));
+app.get('/api/cart', (req, res) => res.json({ success: true, data: [] }));
+app.get('/api/orders/my', (req, res) => res.json({ success: true, data: [] }));
 
-app.post('/api/auth/login', (req, res) => {
-  const { email, password } = req.body;
-  res.json({
-    success: true,
-    data: {
-      user: { id: 'demo123', name: 'Demo User', email, role: 'buyer', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150' },
-      accessToken: 'demo-token',
-      refreshToken: 'demo-refresh'
-    }
-  });
-});
+app.use(express.static(path.join(__dirname, '../client/dist')));
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../client/dist/index.html')));
 
-app.post('/api/auth/register', (req, res) => {
-  const { name, email, password } = req.body;
-  res.json({
-    success: true,
-    data: {
-      user: { id: 'new123', name, email, role: 'buyer', avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=amber&color=fff` },
-      accessToken: 'demo-token',
-      refreshToken: 'demo-refresh'
-    }
-  });
-});
-
-app.get('/api/products', (req, res) => {
-  const { category, search } = req.query;
-  let products = [...demoProducts];
-  if (category) products = products.filter(p => p.category.toLowerCase() === category.toLowerCase());
-  if (search) products = products.filter(p => p.title.toLowerCase().includes(search.toLowerCase()));
-  res.json({ success: true, data: products, page: 1, pages: 1, total: products.length });
-});
-
-app.get('/api/products/featured', (req, res) => {
-  res.json({ success: true, data: demoProducts.filter(p => p.isActive).slice(0, 4) });
-});
-
-app.get('/api/products/categories', (req, res) => {
-  res.json({ success: true, data: demoCategories });
-});
-
-app.get('/api/stores', (req, res) => {
-  res.json({ success: true, data: demoStores, page: 1, pages: 1, total: demoStores.length });
-});
-
-app.get('/api/cart', (req, res) => {
-  res.json({ success: true, data: [], total: 0 });
-});
-
-app.get('/api/orders/my', (req, res) => {
-  res.json({ success: true, data: [], total: 0 });
-});
-
-// Serve static files from client/dist
-const clientDistPath = path.join(__dirname, '../client/dist');
-app.use(express.static(clientDistPath));
-
-// Fallback to SPA
-app.get('*', (req, res) => {
-  res.sendFile(path.join(clientDistPath, 'index.html'));
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
+app.listen(5000, () => console.log('Server on 5000'));
 module.exports = app;
