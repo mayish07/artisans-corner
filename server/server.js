@@ -10,7 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://mohammadmayish_db_user:80WEDNfp5YBFEU13@artisanscorner.pq1hxna.mongodb.net/artisanscorner')
+const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://mohammadmayish_db_user:80WEDNfp5YBFEU13@artisanscorner.pq1hxna.mongodb.net/artisanscorner';
+mongoose.connect(mongoUri)
   .then(() => console.log('MongoDB connected'))
   .catch(e => console.log('MongoDB error:', e.message));
 
