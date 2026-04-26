@@ -15,8 +15,8 @@ export const getProducts = createAsyncThunk(
     try {
       const response = await axios.get(`${API_URL}/products`, { params });
       // Handle both array and object response
-      const data = response.data.data;
-      return Array.isArray(data) ? data : data.products || [];
+      const data = response.data?.data;
+      return Array.isArray(data) ? data : data?.products || [];
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -28,7 +28,7 @@ export const getProduct = createAsyncThunk(
   async (idOrSlug, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_URL}/products/${idOrSlug}`);
-      return response.data.data;
+      return response.data?.data || response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -41,8 +41,8 @@ export const getFeaturedProducts = createAsyncThunk(
     try {
       const response = await axios.get(`${API_URL}/products/featured`);
       // Handle both array and object response
-      const data = response.data.data;
-      return Array.isArray(data) ? data : data.products || [];
+      const data = response.data?.data;
+      return Array.isArray(data) ? data : data?.products || [];
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -55,8 +55,8 @@ export const getCategories = createAsyncThunk(
     try {
       const response = await axios.get(`${API_URL}/products/categories`);
       // Handle both array and object response
-      const data = response.data.data;
-      return Array.isArray(data) ? data : data.categories || [];
+      const data = response.data?.data;
+      return Array.isArray(data) ? data : data?.categories || [];
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }

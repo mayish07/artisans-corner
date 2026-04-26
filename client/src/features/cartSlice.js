@@ -16,7 +16,7 @@ export const getCart = createAsyncThunk(
       const response = await axios.get(`${API_URL}/cart`, {
         headers: getAuthHeader()
       });
-      return response.data.data;
+      return response.data?.data || response.data || { items: [], subtotal: 0 };
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -32,7 +32,7 @@ export const addToCart = createAsyncThunk(
         { productId, quantity },
         { headers: getAuthHeader() }
       );
-      return response.data.data;
+      return response.data?.data || response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -48,7 +48,12 @@ export const updateCartItem = createAsyncThunk(
         { quantity },
         { headers: getAuthHeader() }
       );
-      return response.data.data;
+      return response.data?.data || response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -62,7 +67,7 @@ export const removeFromCart = createAsyncThunk(
       const response = await axios.delete(`${API_URL}/cart/${itemId}`, {
         headers: getAuthHeader()
       });
-      return { ...response.data.data, removedItemId: itemId };
+      return { ...(response.data?.data || response.data), removedItemId: itemId };
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -78,7 +83,12 @@ export const saveForLater = createAsyncThunk(
         {},
         { headers: getAuthHeader() }
       );
-      return response.data.data;
+      return response.data?.data || response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }

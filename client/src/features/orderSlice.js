@@ -16,7 +16,7 @@ export const createOrder = createAsyncThunk(
       const response = await axios.post(`${API_URL}/orders`, orderData, {
         headers: getAuthHeader()
       });
-      return response.data.data.order;
+      return response.data?.data?.order || response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -31,7 +31,7 @@ export const getMyOrders = createAsyncThunk(
         headers: getAuthHeader(),
         params
       });
-      return response.data.data;
+      return response.data?.data || [];
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -45,7 +45,7 @@ export const getOrder = createAsyncThunk(
       const response = await axios.get(`${API_URL}/orders/${orderId}`, {
         headers: getAuthHeader()
       });
-      return response.data.data.order;
+      return response.data?.data?.order || response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -61,7 +61,7 @@ export const cancelOrder = createAsyncThunk(
         {},
         { headers: getAuthHeader() }
       );
-      return response.data.data.order;
+      return response.data?.data?.order || response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -76,7 +76,7 @@ export const getVendorOrders = createAsyncThunk(
         headers: getAuthHeader(),
         params
       });
-      return response.data.data;
+      return response.data?.data || [];
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
