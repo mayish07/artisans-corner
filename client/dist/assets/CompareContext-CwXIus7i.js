@@ -1,1 +1,0 @@
-import{a as n}from"./index-BkRGmzwu.js";const a=(t,r="INR")=>new Intl.NumberFormat("en-IN",{style:"currency",currency:r,minimumFractionDigits:0,maximumFractionDigits:0}).format(t),s=t=>{if(t==null)return"₹0";const r=parseFloat(t)*83;return`₹${Math.round(r).toLocaleString("en-IN")}`},e=n.createContext(),m=()=>n.useContext(e);export{s as a,a as f,m as u};
