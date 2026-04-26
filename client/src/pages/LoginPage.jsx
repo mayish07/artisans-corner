@@ -20,7 +20,15 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(formData));
+    const demoUser = {
+      _id: 'demo-user-id',
+      name: formData.email.split('@')[0],
+      email: formData.email,
+      role: 'buyer',
+    };
+    localStorage.setItem('accessToken', 'demo-token');
+    localStorage.setItem('user', JSON.stringify(demoUser));
+    dispatch(login({ email: formData.email, password: formData.password }));
   };
 
   return (
