@@ -14,7 +14,7 @@ export default function SplashScreen({ onFinish }) {
         }
         return prev + 2;
       });
-    }, 60);
+    }, 50);
 
     return () => clearInterval(interval);
   }, [onFinish]);
@@ -24,7 +24,7 @@ export default function SplashScreen({ onFinish }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-gradient-to-br from-amber-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center"
+      className="fixed inset-0 z-50 bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center"
     >
       <div className="text-center">
         <motion.div
@@ -37,15 +37,10 @@ export default function SplashScreen({ onFinish }) {
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-              className="absolute -inset-4 border-4 border-amber-200 dark:border-amber-800 rounded-full"
+              className="absolute -inset-6 border-4 border-blue-200 rounded-full"
             />
             <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-              className="absolute -inset-8 border-2 border-orange-200 dark:border-orange-800 rounded-full"
-            />
-            <motion.div
-              className="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-amber-500 to-orange-600 rounded-3xl flex items-center justify-center shadow-2xl relative z-10"
+              className="w-28 h-28 md:w-36 md:h-36 bg-white rounded-3xl flex items-center justify-center shadow-2xl relative z-10 border-4 border-blue-100"
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
@@ -55,7 +50,7 @@ export default function SplashScreen({ onFinish }) {
                   scale: [1, 1.1, 1]
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="text-6xl md:text-7xl"
+                className="text-5xl md:text-6xl"
               >
                 🧵
               </motion.span>
@@ -67,16 +62,16 @@ export default function SplashScreen({ onFinish }) {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2"
+          className="text-3xl md:text-4xl font-bold text-gray-900 mb-2"
         >
-          <span className="text-amber-600">Artisan's</span> Corner
+          <span className="text-blue-600">Artisan's</span> Corner
         </motion.h1>
 
         <motion.p
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="text-gray-500 dark:text-gray-400 mb-8"
+          className="text-gray-500 mb-8"
         >
           Handcrafted with Love
         </motion.p>
@@ -87,34 +82,13 @@ export default function SplashScreen({ onFinish }) {
           transition={{ delay: 0.7 }}
           className="w-64 mx-auto"
         >
-          <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full"
+              className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
               style={{ width: `${progress}%` }}
               transition={{ ease: 'easeInOut' }}
             />
           </div>
-          <p className="text-sm text-gray-400 mt-2">{progress}%</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-8 flex justify-center gap-2"
-        >
-          {[0, 1, 2].map((i) => (
-            <motion.div
-              key={i}
-              className="w-2 h-2 bg-amber-500 rounded-full"
-              animate={{ y: [0, -10, 0] }}
-              transition={{
-                duration: 0.6,
-                repeat: Infinity,
-                delay: i * 0.1,
-              }}
-            />
-          ))}
         </motion.div>
       </div>
 
@@ -124,8 +98,7 @@ export default function SplashScreen({ onFinish }) {
         transition={{ delay: 1.5 }}
         className="absolute bottom-8 text-center text-gray-400 text-sm"
       >
-        <p>Connecting to server...</p>
-        <p className="text-xs mt-1">Made with ❤️ for artisans worldwide</p>
+        <p>Loading...</p>
       </motion.div>
     </motion.div>
   );
