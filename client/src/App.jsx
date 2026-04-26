@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from './features/authSlice';
 import { getCart } from './features/cartSlice';
@@ -128,6 +128,9 @@ function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
+  const location = useLocation();
+
+  const isAuthPage = location.pathname === '/' || location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/forgot-password' || location.pathname.startsWith('/reset-password') || location.pathname.startsWith('/verify-email');
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -163,8 +166,8 @@ function App() {
   return (
     <BrowserRouter>
       <CompareProvider>
-        <div className="min-h-screen flex flex-col bg-background dark:bg-stone-900 text-stone-900 dark:text-stone-100">
-          <Navbar />
+        <div className="min-h-screen flex flex-col bg-[#FFFBF5] text-stone-900">
+          {!isAuthPage && <Navbar />}
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<LoginPage />} />
@@ -262,9 +265,9 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
-        <Footer />
-        <Toast />
-        <BackToTop />
+        {!isAuthPage && <Footer />}
+        {!isAuthPage && <Toast />}
+        {!isAuthPage && <BackToTop />}
       </div>
       </CompareProvider>
     </BrowserRouter>
