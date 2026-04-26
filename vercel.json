@@ -2,28 +2,29 @@
   "version": 2,
   "builds": [
     {
+      "src": "client/dist/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "server/server.js",
       "use": "@vercel/node"
     }
   ],
   "env": {
     "NODE_ENV": "production",
-    "VERCEL": "1",
     "MONGODB_URI": "mongodb+srv://mohammadmayish_db_user:80WEDNfp5YBFEU13@artisanscorner.pq1hxna.mongodb.net/?appName=ArtisansCorner&retryWrites=true&w=majority",
-    "JWT_ACCESS_SECRET": "your-super-secret-access-key-min-32",
-    "JWT_REFRESH_SECRET": "your-super-secret-refresh-key-min-32",
-    "CLIENT_URL": "https://artisans-corner-nine.vercel.app"
+    "JWT_ACCESS_SECRET": "artisan-corner-access-secret-key-2024",
+    "JWT_REFRESH_SECRET": "artisan-corner-refresh-secret-key-2024",
+    "CLIENT_URL": "https://artisans-corner.vercel.app"
   },
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/server.js"
+      "dest": "/server/server.js"
     },
     {
       "src": "/(.*)",
-      "dest": "server/server.js"
+      "dest": "/client/dist/index.html"
     }
-  ],
-  "buildCommand": "cd client && npm run build",
-  "installCommand": "npm install && cd client && npm install && cd ../server && npm install"
+  ]
 }
