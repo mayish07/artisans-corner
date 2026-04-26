@@ -20,7 +20,7 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard/seller');
+      navigate('/home');
     }
     return () => dispatch(clearError());
   }, [isAuthenticated, navigate, dispatch]);
