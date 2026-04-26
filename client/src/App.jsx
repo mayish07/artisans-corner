@@ -54,6 +54,7 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminStores from './pages/admin/AdminStores';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminCategories from './pages/admin/AdminCategories';
+import WelcomePage from './pages/WelcomePage';
 
 // Splash Screen Component
 function SplashScreen({ onComplete }) {
@@ -166,7 +167,7 @@ function App() {
           <Navbar />
           <main className="flex-1">
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<WelcomePage />} />
               <Route path="/shop" element={<ProductsPage />} />
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/categories" element={<CategoriesPage />} />
