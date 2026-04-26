@@ -23,21 +23,6 @@ export default function LoginPage() {
     dispatch(login(formData));
   };
 
-  const handleDemoLogin = () => {
-    const demoUser = {
-      _id: 'demo-user-id',
-      name: 'Demo User',
-      email: 'demo@artisans.com',
-      role: 'buyer',
-      avatar: null,
-      createdAt: new Date().toISOString()
-    };
-    localStorage.setItem('accessToken', 'demo-token-12345');
-    localStorage.setItem('refreshToken', 'demo-refresh-12345');
-    localStorage.setItem('user', JSON.stringify(demoUser));
-    dispatch(login({ isDemo: true, user: demoUser }));
-  };
-
   return (
     <div className="min-h-screen flex bg-[#FFFBF5]">
       <div className="hidden lg:flex lg:w-1/2 bg-amber-600 relative overflow-hidden">
@@ -90,20 +75,12 @@ export default function LoginPage() {
             <p className="text-amber-700">Enter your credentials to access your account</p>
           </div>
 
-          <button
-            onClick={handleDemoLogin}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 transition-colors mb-6"
-          >
-            <span>🎮</span>
-            Try Demo Login
-          </button>
-
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-amber-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-[#FFFBF5] text-amber-600">or continue with email</span>
+              <span className="px-4 bg-[#FFFBF5] text-amber-600">Sign in with email</span>
             </div>
           </div>
 
