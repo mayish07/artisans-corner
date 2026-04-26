@@ -1,5 +1,9 @@
 // client/src/App.jsx
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMe } from './features/authSlice';
+import { getCart } from './features/cartSlice';
 import { CompareProvider } from './context/CompareContext';
 
 import Navbar from './components/Navbar';
@@ -52,9 +56,47 @@ import AdminProducts from './pages/admin/AdminProducts';
 import AdminCategories from './pages/admin/AdminCategories';
 import WelcomePage from './pages/WelcomePage';
 
+function SplashScreen() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-amber-600">
+      <div className="text-center">
+        <div className="text-6xl mb-4">🧵</div>
+        <h1 className="text-3xl font-bold text-white mb-2">Artisan's Corner</h1>
+        <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
+  const dispatch = useDispatch();
   const location = useLocation();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const [showSplash, setShowSplash] = useState(true);
+  
   const isAuthPage = location.pathname === '/' || location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/forgot-password' || location.pathname.startsWith('/reset-password') || location.pathname.startsWith('/verify-email');
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      dispatch(getMe());
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(getCart());
+    }
+  }, [isAuthenticated, dispatch]);
+
+  if (showSplash) {
+    return <SplashScreen />;
+  }
 
   return (
     <BrowserRouter>
