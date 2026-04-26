@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCart } from '../features/cartSlice';
 import { createPaymentIntent, confirmPayment } from '../features/orderSlice';
 import { clearCartState } from '../features/cartSlice';
+import { formatPrice } from '../utils/formatCurrency';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -95,7 +96,7 @@ export default function CheckoutPage() {
                       <p className="font-medium text-gray-900 dark:text-white">{item.title}</p>
                       <p className="text-gray-500">Qty: {item.quantity}</p>
                     </div>
-                    <p className="font-semibold text-gray-900 dark:text-white">${item.subtotal?.toFixed(2)}</p>
+                    <p className="font-semibold text-gray-900 dark:text-white">formatPrice(item.subtotal)</p>
                   </div>
                 ))}
                 <button onClick={() => setStep(2)} className="w-full bg-amber-600 text-white py-3 rounded-lg mt-6 hover:bg-amber-700">
@@ -131,7 +132,7 @@ export default function CheckoutPage() {
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Payment</h2>
                 <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
                   <p className="text-sm text-gray-500 mb-2">Payment Amount</p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white">${paymentIntent?.amount?.toFixed(2) || total.toFixed(2)}</p>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white">formatPrice(paymentIntent?.amount || total)</p>
                   <p className="text-sm text-gray-500 mt-2">This is a demo. No real payment will be processed.</p>
                 </div>
                 <div className="flex gap-4 mt-6">
@@ -147,13 +148,13 @@ export default function CheckoutPage() {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 sticky top-24">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Order Summary</h3>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between"><span>Subtotal</span><span>${subtotal?.toFixed(2)}</span></div>
+                <div className="flex justify-between"><span>Subtotal</span><span>formatPrice(subtotal)</span></div>
                 <div className="flex justify-between"><span>Shipping</span><span>{subtotal > 50 ? 'Free' : '$5.99'}</span></div>
                 {discount > 0 && <div className="flex justify-between text-green-600"><span>Discount</span><span>-${discount.toFixed(2)}</span></div>}
               </div>
               <div className="border-t dark:border-gray-700 mt-4 pt-4 flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span className="text-amber-600">${total.toFixed(2)}</span>
+                <span className="text-amber-600">formatPrice(total)</span>
               </div>
               <div className="mt-4">
                 <div className="flex gap-2">

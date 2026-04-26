@@ -161,6 +161,17 @@ const productSchema = new mongoose.Schema({
   salesCount: {
     type: Number,
     default: 0
+  },
+  variants: {
+    colors: [{
+      name: { type: String, required: true },
+      hex: { type: String },
+      image: { type: String }
+    }],
+    sizes: [{
+      name: { type: String, required: true },
+      priceModifier: { type: Number, default: 0 }
+    }]
   }
 }, {
   timestamps: true,

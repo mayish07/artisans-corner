@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromWishlist } from '../features/uiSlice';
+import { formatPrice } from '../utils/formatCurrency';
 
 export default function WishlistPage() {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ export default function WishlistPage() {
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{product.category}</p>
                 <div className="flex justify-between items-center mt-3">
                   <span className="text-lg font-bold text-gray-900 dark:text-white">
-                    ${product.price?.toFixed(2)}
+                    formatPrice(product.price)
                   </span>
                   <button
                     onClick={() => handleRemove(product._id)}

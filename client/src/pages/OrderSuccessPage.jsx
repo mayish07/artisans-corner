@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { CheckCircle, Package, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { formatPrice } from '../utils/formatCurrency';
 
 export default function OrderSuccessPage() {
   const location = useLocation();
@@ -46,7 +47,7 @@ export default function OrderSuccessPage() {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-500">Total</span>
-              <span className="font-bold text-amber-600">${order.pricing?.total?.toFixed(2)}</span>
+              <span className="font-bold text-amber-600">formatPrice(order.pricing?.total)</span>
             </div>
           </div>
         )}

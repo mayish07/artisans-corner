@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../features/cartSlice';
 import { addToWishlist, removeFromWishlist } from '../features/productSlice';
+import { useCompare } from '../context/CompareContext';
+import { formatPrice } from '../utils/formatCurrency';
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { wishlist } = useSelector((state) => state.products);
+  const { addToCompare, removeFromCompare, isInCompare } = useCompare();
 
   const isInWishlist = wishlist.includes(product._id);
+  const inCompare = isInCompare(product._id);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -25,6 +29,15 @@ export default function ProductCard({ product }) {
       dispatch(removeFromWishlist(product._id));
     } else {
       dispatch(addToWishlist(product._id));
+    }
+  };
+
+  const handleCompare = (e) => {
+    e.preventDefault();
+    if (inCompare) {
+      removeFromCompare(product._id);
+    } else {
+      addToCompare(product);
     }
   };
 
@@ -64,6 +77,15 @@ export default function ProductCard({ product }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           </button>
+          <button
+            onClick={handleCompare}
+            className={`absolute bottom-2 left-2 p-2 rounded-full shadow-md ${inCompare ? 'bg-amber-500 text-white' : 'bg-white dark:bg-gray-700 text-gray-400 hover:bg-gray-100'}`}
+            title={inCompare ? 'Remove from Compare' : 'Add to Compare'}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </button>
         </div>
 
         <div className="p-4">
@@ -91,11 +113,11 @@ export default function ProductCard({ product }) {
           <div className="flex items-center justify-between">
             <div>
               <span className="text-lg font-bold text-gray-900 dark:text-white">
-                ${product.price?.toFixed(2)}
+                {formatPrice(product.price)}
               </span>
               {product.comparePrice && (
                 <span className="text-sm text-gray-400 line-through ml-2">
-                  ${product.comparePrice.toFixed(2)}
+                  {formatPrice(product.comparePrice)}
                 </span>
               )}
             </div>

@@ -2,6 +2,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCart, updateCartItem, removeFromCart, saveForLater, moveToCart } from '../features/cartSlice';
+import { formatPrice } from '../utils/formatCurrency';
 
 export default function CartPage() {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ export default function CartPage() {
                     <Link to={`/product/${item.productId}`} className="font-semibold text-gray-900 dark:text-white hover:text-amber-600">
                       {item.title}
                     </Link>
-                    <p className="text-amber-600 font-bold mt-1">${item.price?.toFixed(2)}</p>
+                    <p className="text-amber-600 font-bold mt-1">formatPrice(item.price)</p>
                     <div className="flex items-center gap-4 mt-3">
                       <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded">
                         <button onClick={() => dispatch(updateCartItem({ itemId: item._id, quantity: Math.max(1, item.quantity - 1) }))} className="px-3 py-1 text-gray-600 dark:text-gray-300">-</button>
@@ -70,7 +71,7 @@ export default function CartPage() {
                       <img src={item.image || '/placeholder.jpg'} alt={item.title} className="w-24 h-24 object-cover rounded-lg opacity-60" />
                       <div className="flex-1">
                         <p className="font-semibold text-gray-900 dark:text-white">{item.title}</p>
-                        <p className="text-amber-600 font-bold mt-1">${item.price?.toFixed(2)}</p>
+                        <p className="text-amber-600 font-bold mt-1">formatPrice(item.price)</p>
                         <button onClick={() => dispatch(moveToCart(item._id))} className="text-amber-600 hover:text-amber-700 mt-2">Move to Cart</button>
                       </div>
                     </div>

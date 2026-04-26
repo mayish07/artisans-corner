@@ -5,14 +5,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProduct, clearCurrentProduct, addToWishlist, removeFromWishlist } from '../features/productSlice';
 import { addToCart } from '../features/cartSlice';
 import { addToRecentlyViewed } from '../features/uiSlice';
+import { useCompare } from '../context/CompareContext';
 import reviewService from '../services/reviewService';
 import ProductCard from '../components/ProductCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { formatPrice } from '../utils/formatCurrency';
+
+const shareProduct = (platform) => {
+  const url = window.location.href;
+  const title = document.title;
+  const shareUrls = {
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+    pinterest: `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(title)}`,
+    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`
+  };
+  if (shareUrls[platform]) {
+    window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+  }
+};
 
 export default function ProductDetailPage() {
   const { idOrSlug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { addToCompare, removeFromCompare, isInCompare } = useCompare();
   const { currentProduct, relatedProducts, wishlist } = useSelector((state) => state.products);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [quantity, setQuantity] = useState(1);
@@ -68,6 +85,16 @@ export default function ProductDetailPage() {
       dispatch(addToWishlist(currentProduct._id));
     }
   };
+
+  const handleCompare = () => {
+    if (isInCompare(currentProduct._id)) {
+      removeFromCompare(currentProduct._id);
+    } else {
+      addToCompare(currentProduct);
+    }
+  };
+
+  const isInCompareList = currentProduct && isInCompare(currentProduct._id);
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
@@ -143,11 +170,11 @@ export default function ProductDetailPage() {
             {/* Price */}
             <div className="flex items-center gap-4 mb-6">
               <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                ${currentProduct.price?.toFixed(2)}
+                {formatPrice(currentProduct.price)}
               </span>
               {currentProduct.comparePrice && (
                 <span className="text-xl text-gray-400 line-through">
-                  ${currentProduct.comparePrice.toFixed(2)}
+                  {formatPrice(currentProduct.comparePrice)}
                 </span>
               )}
             </div>

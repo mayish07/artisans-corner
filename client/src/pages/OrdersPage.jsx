@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMyOrders } from '../features/orderSlice';
+import { formatPrice } from '../utils/formatCurrency';
 
 export default function OrdersPage() {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ export default function OrdersPage() {
                   ))}
                 </div>
                 <div className="border-t dark:border-gray-700 mt-4 pt-4 flex justify-between">
-                  <p className="text-gray-500">Total: <span className="font-semibold text-gray-900 dark:text-white">${order.totalAmount?.toFixed(2)}</span></p>
+                  <p className="text-gray-500">Total: <span className="font-semibold text-gray-900 dark:text-white">formatPrice(order.totalAmount)</span></p>
                   <a href={`/orders/${order._id}`} className="text-amber-600 hover:text-amber-700 text-sm font-medium">View Details →</a>
                 </div>
               </div>

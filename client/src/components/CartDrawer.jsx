@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { X, Minus, Plus, Trash2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart, updateCartItem } from '../features/cartSlice';
+import { formatPrice } from '../utils/formatCurrency';
 
 export default function CartDrawer({ isOpen, onClose }) {
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                     >
                       {item.product?.title}
                     </Link>
-                    <p className="text-amber-600 font-semibold">${item.price?.toFixed(2)}</p>
+                    <p className="text-amber-600 font-semibold">formatPrice(item.price)</p>
                     <div className="flex items-center gap-2 mt-2">
                       <button
                         onClick={() => handleQuantityChange(item._id, item.quantity - 1)}

@@ -5,6 +5,7 @@ import { Package, Truck, CheckCircle, Clock, XCircle, MapPin, Phone, Mail } from
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { formatPrice } from '../utils/formatCurrency';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -149,7 +150,7 @@ export default function OrderDetailPage() {
                         {item.name}
                       </Link>
                       <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
-                      <p className="font-semibold text-amber-600">${item.price?.toFixed(2)}</p>
+                      <p className="font-semibold text-amber-600">formatPrice(item.price)</p>
                     </div>
                   </div>
                 ))}
@@ -184,19 +185,19 @@ export default function OrderDetailPage() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span>${order.pricing?.subtotal?.toFixed(2)}</span>
+                  <span>formatPrice(order.pricing?.subtotal)</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
-                  <span>{order.pricing?.shippingCost === 0 ? 'FREE' : `$${order.pricing?.shippingCost?.toFixed(2)}`}</span>
+                  <span>{order.pricing?.shippingCost === 0 ? 'FREE' : formatPrice(order.pricing?.shippingCost)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax</span>
-                  <span>${order.pricing?.tax?.toFixed(2)}</span>
+                  <span>formatPrice(order.pricing?.tax)</span>
                 </div>
                 <div className="border-t pt-3 flex justify-between font-bold text-lg">
                   <span>Total</span>
-                  <span className="text-amber-600">${order.pricing?.total?.toFixed(2)}</span>
+                  <span className="text-amber-600">formatPrice(order.pricing?.total)</span>
                 </div>
               </div>
             </div>

@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Toast from './components/Toast';
 import BackToTop from './components/BackToTop';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { CompareProvider } from './context/CompareContext';
 
 import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
@@ -39,6 +40,7 @@ import AddressesPage from './pages/AddressesPage';
 import MyReviewsPage from './pages/MyReviewsPage';
 import NotificationsPage from './pages/NotificationsPage';
 import NotFoundPage from './pages/NotFoundPage';
+import ComparePage from './pages/ComparePage';
 
 import ManageProducts from './pages/dashboard/ManageProducts';
 import AddEditProduct from './pages/dashboard/AddEditProduct';
@@ -159,19 +161,21 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col bg-background dark:bg-stone-900 text-stone-900 dark:text-stone-100">
-        <Navbar />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/shop" element={<ProductsPage />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/categories" element={<CategoriesPage />} />
-            <Route path="/categories/:slug" element={<ProductsPage />} />
-            <Route path="/product/:slug" element={<ProductDetailPage />} />
-            <Route path="/stores" element={<StoresPage />} />
-            <Route path="/store/:slug" element={<StorePage />} />
-            <Route path="/search" element={<SearchPage />} />
+      <CompareProvider>
+        <div className="min-h-screen flex flex-col bg-background dark:bg-stone-900 text-stone-900 dark:text-stone-100">
+          <Navbar />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/shop" element={<ProductsPage />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/categories/:slug" element={<ProductsPage />} />
+              <Route path="/product/:slug" element={<ProductDetailPage />} />
+              <Route path="/stores" element={<StoresPage />} />
+              <Route path="/store/:slug" element={<StorePage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/compare" element={<ComparePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/cart" element={<CartPage />} />
@@ -260,6 +264,7 @@ function App() {
         <Toast />
         <BackToTop />
       </div>
+      </CompareProvider>
     </BrowserRouter>
   );
 }
