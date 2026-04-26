@@ -24,17 +24,18 @@ export default function LoginPage() {
   };
 
   const handleDemoLogin = () => {
-    localStorage.setItem('accessToken', 'demo-token-12345');
-    localStorage.setItem('refreshToken', 'demo-refresh-12345');
-    localStorage.setItem('user', JSON.stringify({
+    const demoUser = {
       _id: 'demo-user-id',
       name: 'Demo User',
       email: 'demo@artisans.com',
       role: 'buyer',
       avatar: null,
       createdAt: new Date().toISOString()
-    }));
-    window.location.href = '/home';
+    };
+    localStorage.setItem('accessToken', 'demo-token-12345');
+    localStorage.setItem('refreshToken', 'demo-refresh-12345');
+    localStorage.setItem('user', JSON.stringify(demoUser));
+    dispatch(login({ isDemo: true, user: demoUser }));
   };
 
   return (

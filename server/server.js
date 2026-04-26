@@ -15,8 +15,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://mohammadmayish_db_use
   useUnifiedTopology: true
 }).then(() => console.log('MongoDB connected')).catch(e => console.log('MongoDB error:', e.message));
 
-const Product = require('./server/models/Product');
-const User = require('./server/models/User');
+const Product = require('./models/Product');
+const User = require('./models/User');
 
 // API Routes
 app.get('/api/health', (_, res) => res.json({ success: true, status: 'OK' }));

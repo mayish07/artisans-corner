@@ -12,13 +12,17 @@ const getAuthHeader = () => {
 export const getCart = createAsyncThunk(
   'cart/getCart',
   async (_, { rejectWithValue }) => {
+    const token = localStorage.getItem('accessToken');
+    if (token?.startsWith('demo-')) {
+      return { items: [], subtotal: 0, itemCount: 0 };
+    }
     try {
       const response = await axios.get(`${API_URL}/cart`, {
         headers: getAuthHeader()
       });
       return response.data?.data || response.data || { items: [], subtotal: 0 };
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return { items: [], subtotal: 0, itemCount: 0 };
     }
   }
 );

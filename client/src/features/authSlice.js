@@ -28,6 +28,9 @@ export const register = createAsyncThunk(
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
+    if (credentials.isDemo) {
+      return credentials.user;
+    }
     try {
       const response = await axios.post(`${API_URL}/auth/login`, credentials);
       if (response.data?.success) {
@@ -47,11 +50,19 @@ export const getMe = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
       const token = localStorage.getItem('accessToken');
+      const user = localStorage.getItem('user');
+      if (token && token.startsWith('demo-')) {
+        return JSON.parse(user);
+      }
       const response = await axios.get(`${API_URL}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       return response.data.data.user;
     } catch (error) {
+      const user = localStorage.getItem('user');
+      if (user) {
+        return JSON.parse(user);
+      }
       return rejectWithValue(error.response?.data || error.message);
     }
   }
