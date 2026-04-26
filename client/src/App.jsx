@@ -167,7 +167,8 @@ function App() {
           <Navbar />
           <main className="flex-1">
             <Routes>
-              <Route path="/" element={<WelcomePage />} />
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/home" element={<WelcomePage />} />
               <Route path="/shop" element={<ProductsPage />} />
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/categories" element={<CategoriesPage />} />
