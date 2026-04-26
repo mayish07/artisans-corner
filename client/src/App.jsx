@@ -1,22 +1,12 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getMe } from './features/authSlice';
-import { getCart } from './features/cartSlice';
+// client/src/App.jsx
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { CompareProvider } from './context/CompareContext';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import Toast from './components/Toast';
 import BackToTop from './components/BackToTop';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { CompareProvider } from './context/CompareContext';
-
-import HomePage from './pages/HomePage';
-import ProductsPage from './pages/ProductsPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import CartPage from './pages/CartPage';
-import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -30,17 +20,23 @@ import OrderSuccessPage from './pages/OrderSuccessPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminDashboard from './pages/AdminDashboard';
 import WishlistPage from './pages/WishlistPage';
+import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
+import AddressesPage from './pages/AddressesPage';
+import MyReviewsPage from './pages/MyReviewsPage';
+import NotificationsPage from './pages/NotificationsPage';
+import NotFoundPage from './pages/NotFoundPage';
+import ComparePage from './pages/ComparePage';
+
+import HomePage from './pages/HomePage';
+import ProductsPage from './pages/ProductsPage';
+import ProductDetailPage from './pages/ProductDetailPage';
 import StorePage from './pages/StorePage';
 import CategoriesPage from './pages/CategoriesPage';
 import StoresPage from './pages/StoresPage';
 import SearchPage from './pages/SearchPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
-import AddressesPage from './pages/AddressesPage';
-import MyReviewsPage from './pages/MyReviewsPage';
-import NotificationsPage from './pages/NotificationsPage';
-import NotFoundPage from './pages/NotFoundPage';
-import ComparePage from './pages/ComparePage';
 
 import ManageProducts from './pages/dashboard/ManageProducts';
 import AddEditProduct from './pages/dashboard/AddEditProduct';
@@ -57,53 +53,8 @@ import AdminCategories from './pages/admin/AdminCategories';
 import WelcomePage from './pages/WelcomePage';
 
 function App() {
-  const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showSplash, setShowSplash] = useState(true);
   const location = useLocation();
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
   const isAuthPage = location.pathname === '/' || location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/forgot-password' || location.pathname.startsWith('/reset-password') || location.pathname.startsWith('/verify-email');
-
-  if (showSplash) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-amber-600">
-        <div className="text-center">
-          <div className="text-6xl mb-4">🧵</div>
-          <h1 className="text-3xl font-bold text-white mb-2">Artisan's Corner</h1>
-          <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
-        </div>
-      </div>
-    );
-  }
-
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      dispatch(getMe()).finally(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(getCart());
-    }
-  }, [isAuthenticated, dispatch]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FFFBF5]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
-      </div>
-    );
-  }
 
   return (
     <BrowserRouter>
@@ -123,94 +74,45 @@ function App() {
               <Route path="/store/:slug" element={<StorePage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/compare" element={<ComparePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-            <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-            <Route path="/order-success" element={<OrderSuccessPage />} />
-            
-            <Route path="/checkout" element={
-              <ProtectedRoute><CheckoutPage /></ProtectedRoute>
-            } />
-            <Route path="/become-seller" element={
-              <ProtectedRoute><BecomeSellerPage /></ProtectedRoute>
-            } />
-            <Route path="/notifications" element={
-              <ProtectedRoute><NotificationsPage /></ProtectedRoute>
-            } />
-            <Route path="/orders" element={
-              <ProtectedRoute><OrdersPage /></ProtectedRoute>
-            } />
-            <Route path="/orders/:id" element={
-              <ProtectedRoute><OrderDetailPage /></ProtectedRoute>
-            } />
-            <Route path="/profile" element={
-              <ProtectedRoute><ProfilePage /></ProtectedRoute>
-            } />
-            <Route path="/wishlist" element={
-              <ProtectedRoute><WishlistPage /></ProtectedRoute>
-            } />
-            <Route path="/addresses" element={
-              <ProtectedRoute><AddressesPage /></ProtectedRoute>
-            } />
-            <Route path="/my-reviews" element={
-              <ProtectedRoute><MyReviewsPage /></ProtectedRoute>
-            } />
-            
-            <Route path="/dashboard/seller" element={
-              <ProtectedRoute requiredRole="vendor"><SellerDashboard /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/seller/products" element={
-              <ProtectedRoute requiredRole="vendor"><ManageProducts /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/seller/products/new" element={
-              <ProtectedRoute requiredRole="vendor"><AddEditProduct /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/seller/products/:id/edit" element={
-              <ProtectedRoute requiredRole="vendor"><AddEditProduct /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/seller/orders" element={
-              <ProtectedRoute requiredRole="vendor"><SellerOrders /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/seller/analytics" element={
-              <ProtectedRoute requiredRole="vendor"><VendorAnalytics /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/seller/payouts" element={
-              <ProtectedRoute requiredRole="vendor"><VendorPayouts /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/seller/messages" element={
-              <ProtectedRoute requiredRole="vendor"><VendorMessages /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/seller/settings" element={
-              <ProtectedRoute requiredRole="vendor"><StoreSettings /></ProtectedRoute>
-            } />
-            
-            <Route path="/dashboard/admin" element={
-              <ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/admin/users" element={
-              <ProtectedRoute requiredRole="admin"><AdminUsers /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/admin/stores" element={
-              <ProtectedRoute requiredRole="admin"><AdminStores /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/admin/products" element={
-              <ProtectedRoute requiredRole="admin"><AdminProducts /></ProtectedRoute>
-            } />
-            <Route path="/dashboard/admin/categories" element={
-              <ProtectedRoute requiredRole="admin"><AdminCategories /></ProtectedRoute>
-            } />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
-        {!isAuthPage && <Footer />}
-        {!isAuthPage && <Toast />}
-        {!isAuthPage && <BackToTop />}
-      </div>
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+              <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+              <Route path="/order-success" element={<OrderSuccessPage />} />
+              <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+              <Route path="/become-seller" element={<ProtectedRoute><BecomeSellerPage /></ProtectedRoute>} />
+              <Route path="/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+              <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
+              <Route path="/orders/:id" element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+              <Route path="/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
+              <Route path="/addresses" element={<ProtectedRoute><AddressesPage /></ProtectedRoute>} />
+              <Route path="/my-reviews" element={<ProtectedRoute><MyReviewsPage /></ProtectedRoute>} />
+              <Route path="/dashboard/seller" element={<ProtectedRoute requiredRole="vendor"><SellerDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/seller/products" element={<ProtectedRoute requiredRole="vendor"><ManageProducts /></ProtectedRoute>} />
+              <Route path="/dashboard/seller/products/new" element={<ProtectedRoute requiredRole="vendor"><AddEditProduct /></ProtectedRoute>} />
+              <Route path="/dashboard/seller/products/:id/edit" element={<ProtectedRoute requiredRole="vendor"><AddEditProduct /></ProtectedRoute>} />
+              <Route path="/dashboard/seller/orders" element={<ProtectedRoute requiredRole="vendor"><SellerOrders /></ProtectedRoute>} />
+              <Route path="/dashboard/seller/analytics" element={<ProtectedRoute requiredRole="vendor"><VendorAnalytics /></ProtectedRoute>} />
+              <Route path="/dashboard/seller/payouts" element={<ProtectedRoute requiredRole="vendor"><VendorPayouts /></ProtectedRoute>} />
+              <Route path="/dashboard/seller/messages" element={<ProtectedRoute requiredRole="vendor"><VendorMessages /></ProtectedRoute>} />
+              <Route path="/dashboard/seller/settings" element={<ProtectedRoute requiredRole="vendor"><StoreSettings /></ProtectedRoute>} />
+              <Route path="/dashboard/admin" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/admin/users" element={<ProtectedRoute requiredRole="admin"><AdminUsers /></ProtectedRoute>} />
+              <Route path="/dashboard/admin/stores" element={<ProtectedRoute requiredRole="admin"><AdminStores /></ProtectedRoute>} />
+              <Route path="/dashboard/admin/products" element={<ProtectedRoute requiredRole="admin"><AdminProducts /></ProtectedRoute>} />
+              <Route path="/dashboard/admin/categories" element={<ProtectedRoute requiredRole="admin"><AdminCategories /></ProtectedRoute>} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </main>
+          {!isAuthPage && <Footer />}
+          {!isAuthPage && <Toast />}
+          {!isAuthPage && <BackToTop />}
+        </div>
       </CompareProvider>
     </BrowserRouter>
   );
