@@ -14,11 +14,10 @@ export const getProducts = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_URL}/products`, { params });
-      // Handle both array and object response
       const data = response.data?.data;
       return Array.isArray(data) ? data : data?.products || [];
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return [];
     }
   }
 );
@@ -30,7 +29,7 @@ export const getProduct = createAsyncThunk(
       const response = await axios.get(`${API_URL}/products/${idOrSlug}`);
       return response.data?.data || response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return null;
     }
   }
 );
@@ -40,11 +39,10 @@ export const getFeaturedProducts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_URL}/products/featured`);
-      // Handle both array and object response
       const data = response.data?.data;
       return Array.isArray(data) ? data : data?.products || [];
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return [];
     }
   }
 );
@@ -54,11 +52,10 @@ export const getCategories = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_URL}/products/categories`);
-      // Handle both array and object response
       const data = response.data?.data;
       return Array.isArray(data) ? data : data?.categories || [];
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return [];
     }
   }
 );
@@ -72,7 +69,7 @@ export const searchProducts = createAsyncThunk(
       });
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return [];
     }
   }
 );
@@ -87,7 +84,7 @@ export const getMyProducts = createAsyncThunk(
       });
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return [];
     }
   }
 );
@@ -203,48 +200,23 @@ const productSlice = createSlice({
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = action.payload.data.products;
-        state.pagination = action.payload.data.pagination;
+        state.items = action.payload;
       })
-      .addCase(getProducts.rejected, (state, action) => {
+      .addCase(getProducts.rejected, (state) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to load products';
-      })
-      .addCase(getProduct.fulfilled, (state, action) => {
-        state.currentProduct = action.payload.data.product;
-        state.relatedProducts = action.payload.data.relatedProducts;
       })
       .addCase(getFeaturedProducts.fulfilled, (state, action) => {
-        state.featuredProducts = action.payload.data.products;
+        state.featuredProducts = action.payload;
       })
       .addCase(getCategories.fulfilled, (state, action) => {
-        state.categories = action.payload.data.categories;
+        state.categories = action.payload;
       })
       .addCase(searchProducts.fulfilled, (state, action) => {
-        state.items = action.payload.data.products;
-        state.pagination = action.payload.data.pagination;
+        state.items = action.payload;
       })
       .addCase(getMyProducts.fulfilled, (state, action) => {
-        state.myProducts = action.payload.data.products;
+        state.myProducts = action.payload;
       })
-      .addCase(createProduct.fulfilled, (state, action) => {
-        state.myProducts.unshift(action.payload.data.product);
-      })
-      .addCase(updateProduct.fulfilled, (state, action) => {
-        const index = state.myProducts.findIndex(p => p._id === action.payload.data.product._id);
-        if (index !== -1) {
-          state.myProducts[index] = action.payload.data.product;
-        }
-      })
-      .addCase(deleteProduct.fulfilled, (state, action) => {
-        state.myProducts = state.myProducts.filter(p => p._id !== action.payload);
-      })
-      .addCase(addToWishlist.fulfilled, (state, action) => {
-        state.wishlist = action.payload.wishlist;
-      })
-      .addCase(removeFromWishlist.fulfilled, (state, action) => {
-        state.wishlist = action.payload.wishlist;
-      });
   },
 });
 

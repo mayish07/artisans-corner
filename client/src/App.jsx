@@ -126,8 +126,8 @@ function SplashScreen({ onComplete }) {
 function App() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const [isLoading, setIsLoading] = useState(true);
-  const [showSplash, setShowSplash] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSplash, setShowSplash] = useState(false);
   const location = useLocation();
 
   const isAuthPage = location.pathname === '/' || location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/forgot-password' || location.pathname.startsWith('/reset-password') || location.pathname.startsWith('/verify-email');
