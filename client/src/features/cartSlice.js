@@ -54,11 +54,6 @@ export const updateCartItem = createAsyncThunk(
     }
   }
 );
-    } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
 
 export const removeFromCart = createAsyncThunk(
   'cart/removeFromCart',
@@ -84,11 +79,6 @@ export const saveForLater = createAsyncThunk(
         { headers: getAuthHeader() }
       );
       return response.data?.data || response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
